@@ -1,10 +1,11 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
-
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from './app.routes';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCp04FdqTjbQrjg_E2wwxfy80BJpXHTfWY",
@@ -22,3 +23,13 @@ const analytics = getAnalytics(app);
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes)]
 };
+
+@NgModule({
+  declarations: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule
+  ],
+  providers: [],
+})
+export class AppModule { }
