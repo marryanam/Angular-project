@@ -1,0 +1,54 @@
+:host{
+    position: relative;
+    width: 100%;
+    display: block;
+    overflow-x: hidden;
+    header{
+        width: 100%;
+        padding: 10px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index:5;
+        .container{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        *{
+            user-select: none;
+        }
+        p-button ::ng-deep {
+            button{
+                color: var(--surface-400);
+                border-color: var(--surface-400);
+                background: transparent;
+                &:enabled:focus {
+                    box-shadow: none;
+                }
+            }
+        }
+        ul{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            li{
+                margin: 0 20px;
+                padding: 10px;
+                cursor: pointer;
+                color: var(--surface-400);
+                transition: var(--transition-3);
+                &:hover{
+                    opacity: var(--opacity-7);
+                }
+            }
+        }
+        .icon-home{
+            font-size: 20px;
+        }
+    }
+    .page-wrapper{
+        display: flex;
+        flex-direction: column;
+    }
+}

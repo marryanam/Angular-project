@@ -1,1 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../src/app/styles-global/normalize.scss";
+@import "../src/app/styles-global/vars.scss";
+@import "../src/app/styles-global/global.scss";
+@import  "../node_modules/primeicons/primeicons.css";
