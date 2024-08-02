@@ -21,10 +21,17 @@
         p-button ::ng-deep {
             button{
                 color: var(--surface-400);
-                border-color: var(--surface-400);
+                border: none;
                 background: transparent;
+                transition: var(--transition-3);
                 &:enabled:focus {
                     box-shadow: none;
+                }
+                &:hover{
+                    opacity: var(--opacity-7);
+                }
+                .pi{
+                    font-size: 20px;
                 }
             }
         }
