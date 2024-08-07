@@ -1,5 +1,5 @@
 :host{
-    background: rgb(24, 24, 24);
+    background: rgb(12, 17, 17);
     display: block;
     position: relative;
     width: 100vw;
@@ -17,7 +17,7 @@
         line-height: 0;
     }
     canvas{
-        z-index: 2;
+        z-index: 1;
         position: absolute;
     }
 }

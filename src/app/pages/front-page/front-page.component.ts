@@ -11,41 +11,47 @@ import * as dat from 'dat.gui';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FrontPageComponent implements OnInit{
-  gui: any;
-  canvas: any;
-  scene: any;
-  geometry: any;
-  material: any;
-  sphere: any;
-  pointLight: any;
-  pointLightExtra:any;
-  pointLightSecondary:any;
-  sizes: any;
-  camera: any;
-  renderer: any;
-  clock: any;
-  tick: any;
-  textureLoader:any;
-  normalTexture:any;
-  pointLightHelper:any;
-  onDocumentMouseMove:any;
-  mouseX:any;
-  mouseY:any;
-  targetX:any;
-  targetY:any;
+  gui!: dat.GUI;
+  canvas!: HTMLCanvasElement;
+  scene!: THREE.Scene;
+  geometry!: THREE.SphereGeometry;
+  material!: THREE.MeshStandardMaterial;
+  sphere!: THREE.Mesh;
+  pointLight!: THREE.PointLight;
+  pointLightExtra!: THREE.PointLight;
+  pointLightSecondary!: THREE.PointLight;
+  sizes!: { width: number; height: number };
+  camera!: THREE.PerspectiveCamera;
+  renderer!: THREE.WebGLRenderer;
+  clock!: THREE.Clock;
+  tick!: () => void;
+  textureLoader!: THREE.TextureLoader;
+  normalTexture!: THREE.Texture;
+  displacementTexture!: THREE.Texture;
+  pointLightHelper!: THREE.PointLightHelper;
+  onDocumentMouseMove!: (event: MouseEvent) => void;
+  mouseX!: number;
+  mouseY!: number;
+  targetX!: number;
+  targetY!: number;
+  lastMouseMoveTime: number = 0;
+  mouseMoveTimeout: number = 2000; 
 
-  constructor() { }
+  constructor() {
+    
+   }
 
   ngOnInit(): void {
     this.setInitialData();
     this.resize();
     this.move();
     this.runTick();
+    this.initCustomCursor();
   }
 
   setInitialData() {
-    this.gui = new dat.GUI();
-    this.canvas = document.querySelector('canvas.main');
+    // this.gui = new dat.GUI();
+    this.canvas = document.querySelector('canvas.main') as HTMLCanvasElement;
     this.scene = new THREE.Scene();
 
     this.setGeometry();
@@ -74,15 +80,19 @@ export class FrontPageComponent implements OnInit{
 
   setGeometry(){
     this.textureLoader  = new THREE.TextureLoader();
-    this.normalTexture = this.textureLoader.load("../../../assets/texture-4.png")
+    this.normalTexture = this.textureLoader.load("../../../assets/texture-1.jpg");
+    this.displacementTexture =  this.textureLoader.load("../../../assets/Obsidian_002_ambientOcclusion.png");
 
-    this.geometry = new THREE.SphereGeometry(.5, 64,64);
+
+    this.geometry = new THREE.SphereGeometry(.4, 64,64);
 
     this.material = new THREE.MeshStandardMaterial();
-    this.material.metalness = 0.7;
-    this.material.roughness = 0.2;
+    this.material.metalness = 0.22;
+    this.material.roughness = 0.39;
     this.material.color = new THREE.Color(0x292929);
     this.material.normalMap = this.normalTexture;
+    this.material.displacementMap = this.displacementTexture;
+    this.material.displacementScale = 0.3; 
 
     this.sphere = new THREE.Mesh(this.geometry, this.material);
     this.scene.add(this.sphere);
@@ -91,13 +101,13 @@ export class FrontPageComponent implements OnInit{
   setLight(){
     this.pointLight = new THREE.PointLight(0xffffff, 2);
     this.pointLight.intensity =  3.26;
-    this.pointLight.position.set(0.77, -0.78, -0.2);
+    this.pointLight.position.set(0.95, -1.69, -0.07);
 
     this.scene.add(this.pointLight);
 
     this.pointLightExtra = new THREE.PointLight(0xff0000, 3);
     this.pointLightExtra.intensity = 3.06;
-    this.pointLightExtra.position.set(-0.39, 0.38, 0.19);
+    this.pointLightExtra.position.set(-1.08, 0.71, 0.19);
     this.scene.add(this.pointLightExtra);
 
     this.pointLightSecondary = new THREE.PointLight(0x15dddd, 3);
@@ -119,38 +129,61 @@ export class FrontPageComponent implements OnInit{
     });
   }
 
-  guiData(){
+guiData() {
+  this.pointLightHelper = new THREE.PointLightHelper(this.pointLightSecondary, 0.5);
+  this.scene.add(this.pointLightHelper);
 
-    this.pointLightHelper = new THREE.PointLightHelper(this.pointLightSecondary, 0.5);
-    this.scene.add(this.pointLightHelper);
+  // Controls for Light1
+  const light1 = this.gui.addFolder('Light1');
+  light1.add(this.pointLight.position, 'x').min(-10).max(10).step(0.01).name('Position X');
+  light1.add(this.pointLight.position, 'y').min(-10).max(10).step(0.01).name('Position Y');
+  light1.add(this.pointLight.position, 'z').min(-10).max(10).step(0.01).name('Position Z');
+  light1.add(this.pointLight, 'intensity').min(0).max(10).step(0.01).name('Intensity');
 
-    const light1 =  this.gui.addFolder('Light1');
-    const light2 =  this.gui.addFolder('Light2');
-    const light3 =  this.gui.addFolder('Light3');
+  // Controls for Light2
+  const light2 = this.gui.addFolder('Light2');
+  light2.add(this.pointLightExtra.position, 'x').min(-10).max(10).step(0.01).name('Position X');
+  light2.add(this.pointLightExtra.position, 'y').min(-10).max(10).step(0.01).name('Position Y');
+  light2.add(this.pointLightExtra.position, 'z').min(-10).max(10).step(0.01).name('Position Z');
+  light2.add(this.pointLightExtra, 'intensity').min(0).max(10).step(0.01).name('Intensity');
 
-    light1.add(this.pointLight.position, 'x').min(-3).max(3).step(0.01);
-    light1.add(this.pointLight.position, 'y').min(-3).max(3).step(0.01);
-    light1.add(this.pointLight.position, 'z').min(-3).max(3).step(0.01);
-    light1.add(this.pointLight, 'intensity').min(0).max(6).step(0.01);
+  // Controls for Light3
+  const light3 = this.gui.addFolder('Light3');
+  light3.add(this.pointLightSecondary.position, 'x').min(-10).max(10).step(0.01).name('Position X');
+  light3.add(this.pointLightSecondary.position, 'y').min(-10).max(10).step(0.01).name('Position Y');
+  light3.add(this.pointLightSecondary.position, 'z').min(-10).max(10).step(0.01).name('Position Z');
+  light3.add(this.pointLightSecondary, 'intensity').min(0).max(10).step(0.01).name('Intensity');
 
-    light2.add(this.pointLightExtra.position, 'x').min(-3).max(3).step(0.01);
-    light2.add(this.pointLightExtra.position, 'y').min(-3).max(3).step(0.01);
-    light2.add(this.pointLightExtra.position, 'z').min(-3).max(3).step(0.01);
-    light2.add(this.pointLightExtra, 'intensity').min(0).max(6).step(0.01);
+  // Controls for Material properties
+  const materialFolder = this.gui.addFolder('Material');
+  materialFolder.add(this.material, 'metalness').min(0).max(1).step(0.01).name('Metalness');
+  materialFolder.add(this.material, 'roughness').min(0).max(1).step(0.01).name('Roughness');
+  materialFolder.addColor({ color: this.material.color.getHex() }, 'color').onChange((value) => {
+    this.material.color.set(value);
+  }).name('Color');
+  materialFolder.add(this.material, 'displacementScale').min(0).max(1).step(0.01).name('Displacement Scale');
 
-    light3.add(this.pointLightSecondary.position, 'x').min(-3).max(3).step(0.01);
-    light3.add(this.pointLightSecondary.position, 'y').min(-3).max(3).step(0.01);
-    light3.add(this.pointLightSecondary.position, 'z').min(-3).max(3).step(0.01);
-    light3.add(this.pointLightSecondary, 'intensity').min(0).max(6).step(0.01);
+  // Update textures using GUI
+  const displacementFolder = this.gui.addFolder('Displacement Map');
+  displacementFolder.add({ update: () => this.material.displacementMap = this.displacementTexture }, 'update').name('Update Displacement Map');
 
-  }
-
+  const normalFolder = this.gui.addFolder('Normal Map');
+  normalFolder.add({ update: () => this.material.normalMap = this.normalTexture }, 'update').name('Update Normal Map');
+}
   runTick() {
     this.tick = () => {
+      const elapsedTime = this.clock.getElapsedTime();
+
+      // Check if enough time has passed since the last mouse move
+      const currentTime = Date.now();
+      const timeSinceLastMove = currentTime - this.lastMouseMoveTime;
+
+      if (timeSinceLastMove > this.mouseMoveTimeout) {
+        this.sphere.rotation.y = .5 * elapsedTime;
+      }
       this.targetX = this.mouseX * .001;
       this.targetY = this.mouseY * .001;
 
-      const elapsedTime = this.clock.getElapsedTime();
       this.sphere.rotation.y = .5 * elapsedTime;
       this.sphere.rotation.y += .5 * (this.targetX - this.sphere.rotation.y);
       this.sphere.rotation.x += .5 * (this.targetY - this.sphere.rotation.x);
@@ -174,9 +207,49 @@ export class FrontPageComponent implements OnInit{
     this.onDocumentMouseMove = (event:any) =>{
       this.mouseX = (event.clientX - windowHalfX);
       this.mouseY = (event.clientY - windowHalfY);
+      this.lastMouseMoveTime = Date.now(); // Update last mouse move time
     }
 
     document.addEventListener('mousemove', this.onDocumentMouseMove);
+  }
+
+
+  initCustomCursor() {
+    const cursor = document.querySelector<HTMLElement>('.cursor');
+    const links = document.querySelectorAll<HTMLElement>('.hover-this');
+
+    if (!cursor) {
+      console.error('Cursor element not found');
+      return;
+    }
+
+    const animateit = function(this: HTMLElement, e: MouseEvent) {
+      const span = this.querySelector<HTMLElement>('li');
+      if (!span) return;
+
+      const { offsetX: x, offsetY: y } = e;
+      const { offsetWidth: width, offsetHeight: height } = this;
+      const move = 25;
+      const xMove = (x / width) * (move * 2) - move;
+      const yMove = (y / height) * (move * 2) - move;
+
+      span.style.transform = `translate(${xMove}px, ${yMove}px)`;
+
+      if (e.type === 'mouseleave') span.style.transform = '';
+    };
+
+    const editCursor = (e: MouseEvent) => {
+      const { clientX: x, clientY: y } = e;
+      cursor.style.left = x + 'px';
+      cursor.style.top = y + 'px';
+    };
+
+    links.forEach(link => {
+      link.addEventListener('mousemove', animateit);
+      link.addEventListener('mouseleave', animateit);
+    });
+
+    window.addEventListener('mousemove', editCursor);
   }
 
 }

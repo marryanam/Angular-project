@@ -1,7 +1,30 @@
+body{
+    cursor: none;
+}
+
 .container{
     max-width: 1600px;
     width: 100%;
     margin: 0 auto;
     padding: 0 20px;
     position: relative;
+}
+
+.hover-this {
+    transition: all 0.3s ease;
+}
+
+.cursor {
+    pointer-events: none;
+    position: fixed;
+    padding: 0.3rem;
+    background-color: #fff;
+    border-radius: 50%;
+    mix-blend-mode: difference;
+    transition: transform 0.3s ease;
+}
+
+
+.hover-this:hover ~ .cursor {
+    transform: translate(-50%, -50%) scale(8);
 }
