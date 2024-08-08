@@ -6,6 +6,7 @@ import { getAnalytics } from "firebase/analytics";
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app.routes';
+import { CustomCursorDirective } from './directives/cursor/custom-cursor.directive';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCp04FdqTjbQrjg_E2wwxfy80BJpXHTfWY",
@@ -21,15 +22,16 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes)]
+  providers: [
+    provideRouter(routes)]
 };
 
 @NgModule({
-  declarations: [],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CustomCursorDirective
   ],
-  providers: [],
+  providers: []
 })
 export class AppModule { }

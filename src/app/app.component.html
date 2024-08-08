@@ -1,14 +1,16 @@
 <div class="page-wrapper">
     <header>
       <div class="container">
-        <p-button icon="pi pi-home" severity="secondary" routerLink="/"/>
+        <div class="target-link" routerLink="/">
+          <p-button icon="pi pi-home" severity="secondary"/>
+        </div>
         <ul>
-          <li routerLink="/design" class="hover-this">Design</li>
-          <li routerLink="/functionality" class="hover-this">Functionality</li>
+          <li routerLink="/design" class="target-link">Design</li>
+          <li routerLink="/functionality" class="target-link">Functionality</li>
         </ul>
       </div>
     </header>
   <router-outlet />
-  <div class="cursor"></div>
+  <div appCustomCursor class="cursor"></div>
   <footer></footer>
 </div>

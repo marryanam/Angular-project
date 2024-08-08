@@ -4,3 +4,8 @@ export interface PageEvent {
     page: number;
     pageCount: number;
 }
+
+export interface CursorPosition {
+    left: number;
+    top: number;
+}

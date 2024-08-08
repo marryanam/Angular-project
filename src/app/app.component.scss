@@ -24,6 +24,7 @@
                 border: none;
                 background: transparent;
                 transition: var(--transition-3);
+                pointer-events: none;
                 &:enabled:focus {
                     box-shadow: none;
                 }

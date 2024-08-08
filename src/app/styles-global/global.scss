@@ -10,21 +10,23 @@ body{
     position: relative;
 }
 
-.hover-this {
+.target-link{
     transition: all 0.3s ease;
 }
 
 .cursor {
-    pointer-events: none;
-    position: fixed;
-    padding: 0.3rem;
-    background-color: #fff;
-    border-radius: 50%;
+    border-radius: 50px;
+    width: 10px;
+    height: 10px;
+    border: solid 1px #fff;
+    background: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    -webkit-transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
     mix-blend-mode: difference;
     transition: transform 0.3s ease;
-}
-
-
-.hover-this:hover ~ .cursor {
-    transform: translate(-50%, -50%) scale(8);
 }

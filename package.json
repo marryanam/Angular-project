@@ -20,6 +20,7 @@
     "@angular/router": "^17.3.0",
     "dat.gui": "^0.7.9",
     "firebase": "^10.12.4",
+    "gsap": "^3.12.5",
     "npm-gui": "^4.0.4",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.7",
