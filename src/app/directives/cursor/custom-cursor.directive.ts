@@ -44,7 +44,8 @@ export class CustomCursorDirective implements OnInit {
           left: targetPosition.left - (Math.sin(angle) * hypotenuse) / 2,
           top: targetPosition.top - (Math.cos(angle) * hypotenuse) / 2,
           height: hoveredElement.clientHeight,
-          width: hoveredElement.clientWidth
+          width: hoveredElement.clientWidth,
+          background: '#fff'
         });
 
       } else {
@@ -60,8 +61,9 @@ export class CustomCursorDirective implements OnInit {
       duration: 0.2,
       left: cursorPosition.left,
       top: cursorPosition.top,
-      height: '12px',
-      width: '12px'
+      height: '15px',
+      width: '15px',
+      background: 'transparent'
     });
   }
 

@@ -79,19 +79,19 @@ export class FrontPageComponent implements OnInit{
 
   setGeometry(){
     this.textureLoader  = new THREE.TextureLoader();
-    this.normalTexture = this.textureLoader.load("../../../assets/texture-1.jpg");
+    this.normalTexture = this.textureLoader.load("../../../assets/texture-4.png");
     this.displacementTexture =  this.textureLoader.load("../../../assets/Obsidian_002_ambientOcclusion.png");
 
 
     this.geometry = new THREE.SphereGeometry(.4, 64,64);
 
     this.material = new THREE.MeshStandardMaterial();
-    this.material.metalness = 0.22;
+    this.material.metalness = 1;
     this.material.roughness = 0.39;
-    this.material.color = new THREE.Color(0x292929);
+    this.material.color = new THREE.Color(0x592f26);
     this.material.normalMap = this.normalTexture;
     this.material.displacementMap = this.displacementTexture;
-    this.material.displacementScale = 0.3; 
+    this.material.displacementScale = 0.1; 
 
     this.sphere = new THREE.Mesh(this.geometry, this.material);
     this.scene.add(this.sphere);
