@@ -5,19 +5,30 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    .container, .wrapper{
+        height: 100vh;
+        position: relative;
+    }
     p{
         position: absolute;
-        color: rgb(255 255 255 / 5%);
+        color: rgb(255 255 255 / 15%);
         font-weight: bold;
         font-size: 6em;
-        top: 53%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        bottom: 10%;
+        left: 3%;
         z-index: 1;
-        line-height: 0;
+        line-height: 0.8em;
+        max-width: 200px;
+        width: 100%;
+        margin: 0;
     }
     canvas{
-        // z-index: 1;
         position: absolute;
+        top: 0;
     }
+
+    .typing-text {
+        font-family: 'Courier New', Courier, monospace;
+    }
+    
 }

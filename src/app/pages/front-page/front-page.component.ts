@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
@@ -36,8 +36,11 @@ export class FrontPageComponent implements OnInit{
   targetY!: number;
   lastMouseMoveTime: number = 0;
   mouseMoveTimeout: number = 2000; 
+  titleText:string ='';
+  fullText: string = 'Feel the sphere';
+  typingSpeed: number = 200;
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     
    }
 
@@ -46,6 +49,7 @@ export class FrontPageComponent implements OnInit{
     this.resize();
     this.move();
     this.runTick();
+    this.typeText();
   }
 
   setInitialData() {
@@ -212,5 +216,16 @@ guiData() {
     document.addEventListener('mousemove', this.onDocumentMouseMove);
   }
 
+  typeText(): void {
+    let index = 0;
+    const interval = setInterval(() => {
+      this.titleText += this.fullText.charAt(index);
+      index++;
+      this.cdr.markForCheck();
+      if (index === this.fullText.length) {
+        clearInterval(interval);
+      }
+    }, this.typingSpeed);
+  }
 
 }
