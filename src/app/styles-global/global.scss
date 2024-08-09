@@ -28,4 +28,13 @@ body{
     transform: translate(-50%, -50%) rotate(0deg);
     mix-blend-mode: difference;
     transition: transform 0.3s ease;
+    // z-index: 100;
+}
+
+.pagination-wrapper{
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
 }

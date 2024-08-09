@@ -1,6 +1,7 @@
-<p-paginator 
-    (onPageChange)="onPageChange($any($event))" 
-    [first]="first" 
-    [rows]="rows" 
-    [totalRecords]="120" 
-    [rowsPerPageOptions]="[10, 20, 30]" />
+<app-pagination 
+    class="pagination-wrapper"
+    [totalItems]="totalItems" 
+    [itemsPerPage]="itemsPerPage" 
+    [currentPage]="currentPage" 
+    (pageChanged)="onPageChanged($event)">
+</app-pagination>

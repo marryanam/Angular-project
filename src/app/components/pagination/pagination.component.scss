@@ -1,0 +1,29 @@
+:host{
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        color: var(--surface-400);
+        font-size: 18px;
+        padding: 20px;
+        ul{
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 10px;
+            li{
+                padding: 10px 15px;
+            }
+        }
+        .next{
+
+        }
+        .prev{
+
+        }
+        .next, .prev{
+            padding: 10px;
+        }
+    }
+}

@@ -1,0 +1,21 @@
+<div class="pagination">
+    <div class="prev target-link" 
+      (click)="changePage(currentPage - 1)">
+      Previous
+    </div>
+
+    <ul>
+      @for (page of pages; track $index) {
+        <li (click)="changePage(page)" 
+            class="target-link"
+            [class.active]="page === currentPage">
+            {{ page }}
+        </li>
+      }
+    </ul>
+
+    <div class="next target-link" 
+      (click)="changePage(currentPage + 1)">
+      Next
+    </div>
+  </div>
