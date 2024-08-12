@@ -1,7 +1,7 @@
 <app-pagination 
     class="pagination-wrapper"
-    [totalItems]="totalItems" 
-    [itemsPerPage]="itemsPerPage" 
-    [currentPage]="currentPage" 
+    [totalItems]="totalItems()" 
+    [itemsPerPage]="itemsPerPage()" 
+    [currentPage]="currentPage()" 
     (pageChanged)="onPageChanged($event)">
 </app-pagination>

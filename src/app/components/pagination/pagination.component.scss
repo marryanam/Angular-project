@@ -14,13 +14,13 @@
             padding: 0 10px;
             li{
                 padding: 10px 15px;
+                border-radius: 50%;
+                border: 1px solid transparent;
+                transition: var(--transition-3);
+                &.active{
+                    border: 1px solid var(--surface-400);
+                }
             }
-        }
-        .next{
-
-        }
-        .prev{
-
         }
         .next, .prev{
             padding: 10px;

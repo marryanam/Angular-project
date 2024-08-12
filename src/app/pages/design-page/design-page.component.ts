@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { PaginatorModule } from 'primeng/paginator';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { PaginationService } from '../../services/pagination/pagination.service';
 
 @Component({
   selector: 'app-design-page',
@@ -12,17 +13,17 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 })
 export class DesignPageComponent {
   
-  totalItems = 100; // Загальна кількість елементів
-  itemsPerPage = 10; // Елементів на сторінку
-  currentPage = 1; // Поточна сторінка
-  items = Array.from({ length: 100 }, (_, i) => `Item ${i + 1}`);
+  totalItems = signal(this.paginationService.totalItems);
+  itemsPerPage = signal(this.paginationService.itemsPerPage);
+  currentPage = signal(this.paginationService.currentPage);
+  items = signal(this.paginationService.items);
 
-  get paginatedItems(): string[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.items.slice(startIndex, startIndex + this.itemsPerPage);
+  constructor(private paginationService: PaginationService){
+
   }
 
-  onPageChanged(page: number): void {
-    this.currentPage = page;
+  onPageChanged(number: number): void {
+    this.paginationService.onPageChanged('design', number);
   }
+
 }

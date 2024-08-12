@@ -1,9 +1,4 @@
 :host{
     min-height: 100vh;
     background: #fff;
-    ::ng-deep{
-        .p-paginator.p-component {
-            background: none;
-        }
-    }
 }

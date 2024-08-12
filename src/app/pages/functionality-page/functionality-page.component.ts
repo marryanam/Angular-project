@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { PaginationService } from '../../services/pagination/pagination.service';
 
 @Component({
   selector: 'app-functionality-page',
@@ -10,17 +11,17 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FunctionalityPageComponent {
-  totalItems = 100; // Загальна кількість елементів
-  itemsPerPage = 10; // Елементів на сторінку
-  currentPage = 1; // Поточна сторінка
-  items = Array.from({ length: 100 }, (_, i) => `Item ${i + 1}`);
+  totalItems = signal(this.paginationService.totalItems);
+  itemsPerPage = signal(this.paginationService.itemsPerPage);
+  currentPage = signal(this.paginationService.currentPage);
+  items = signal(this.paginationService.items);
 
-  get paginatedItems(): string[] {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    return this.items.slice(startIndex, startIndex + this.itemsPerPage);
+  constructor(private paginationService: PaginationService){
+
   }
 
-  onPageChanged(page: number): void {
-    this.currentPage = page;
+  onPageChanged(number: number): void {
+    this.paginationService.onPageChanged('functionality', number);
   }
+
 }
