@@ -1,4 +1,8 @@
 :host{
+    min-height: 100vh;
+    background: rgb(12, 17, 17);
+    display: block;
+    width: 100%;
     .photo{
         position: fixed;
         top: 0;
