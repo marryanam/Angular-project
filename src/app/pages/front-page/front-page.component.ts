@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { StarfieldComponent } from '../../components/starfield/starfield.component';
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
 
 @Component({
   selector: 'app-front-page',
   standalone: true,
-  imports: [],
+  imports: [StarfieldComponent],
   templateUrl: './front-page.component.html',
   styleUrls: ['./front-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

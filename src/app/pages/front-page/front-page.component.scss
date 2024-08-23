@@ -25,10 +25,33 @@
     canvas{
         position: absolute;
         top: 0;
+        z-index: 1;
     }
 
     .typing-text {
         font-family: 'Courier New', Courier, monospace;
     }
-    
+    app-starfield{
+        width: 100%;
+        display: block;
+        height: 100%;
+        z-index: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .decorative-circle{
+        width: 75%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+        img{
+            opacity: 0.3;
+            filter: blur(150px);
+            transform: rotate(-20deg);
+        }
+    }
 }

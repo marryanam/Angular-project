@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { PaginationService } from '../../services/pagination/pagination.service';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-functionality-page',
   standalone: true,
-  imports: [PaginationComponent],
+  imports: [RouterOutlet, PaginationComponent],
   templateUrl: './functionality-page.component.html',
   styleUrl: './functionality-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

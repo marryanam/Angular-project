@@ -1,6 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { DesignPageComponent } from './pages/design-page/design-page.component';
+import { DesignPage1Component } from './pages/design-page/design-page-1/design-page-1.component';
 import { FunctionalityPageComponent } from './pages/functionality-page/functionality-page.component';
 import { NgModule } from '@angular/core';
 import { FrontPageComponent } from './pages/front-page/front-page.component';
@@ -8,7 +9,7 @@ import { FrontPageComponent } from './pages/front-page/front-page.component';
 export const routes: Routes = [
     { path: '', component: FrontPageComponent },
     { path: 'design', component: DesignPageComponent, children: [
-        { path: 'page-1', component: DesignPageComponent },
+        { path: 'page-1', component: DesignPage1Component },
         { path: 'page-2', component: DesignPageComponent },
         { path: 'page-3', component: DesignPageComponent }
     ]},
