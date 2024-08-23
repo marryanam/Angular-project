@@ -27,8 +27,8 @@ export class DesignPage1Component implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initThree();
-    this.animate();
+    // this.initThree();
+    // this.animate();
   }
 
   ngOnDestroy(): void {
