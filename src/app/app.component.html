@@ -1,16 +1,21 @@
 <div class="page-wrapper">
-  <!-- <header>
+  <header>
     <div class="container">
       <div class="target-link" routerLink="/">
         <p-button icon="pi pi-home" severity="secondary"/>
       </div>
+
       <ul>
         <li routerLink="/design" class="target-link">Design</li>
         <li routerLink="/functionality" class="target-link">Functionality</li>
       </ul>
     </div>
-  </header> -->
+  </header>
   <router-outlet />
   <div appCustomCursor class="cursor"></div>
-  <footer></footer>
+  <footer>
+    <div class="target-link play-btn" (click)="toggleAudio()">
+      <p-button [icon]="isAudioPlayedManual ? 'pi pi-pause-circle' : 'pi pi-play-circle'" severity="secondary"/>
+    </div>
+  </footer>
 </div>

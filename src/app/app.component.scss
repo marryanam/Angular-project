@@ -60,4 +60,30 @@
         flex-direction: column;
         min-height: 100vh;
     }
+
+    .play-btn{
+        bottom:10px;
+        right: 10px;
+        position: fixed;
+        opacity: 0.5;
+        z-index: 3;
+        ::ng-deep {
+            button{
+                color: var(--surface-400);
+                border: none;
+                background: transparent;
+                transition: var(--transition-3);
+                pointer-events: none;
+                &:enabled:focus {
+                    box-shadow: none;
+                }
+                &:hover{
+                    opacity: var(--opacity-7);
+                }
+                .pi{
+                    font-size: 20px;
+                }
+            }
+        }
+    }
 }
