@@ -33,7 +33,18 @@
                 height: 400px;
                 background-size: cover;
                 z-index: -1;
+                animation: 3s alternate slidein forwards;
             }
         }
     }
 }
+
+@keyframes slidein {
+    from {
+      transform: translateX(100%);
+    }
+  
+    to {
+      transform: translateX(0%);
+    }
+  }
