@@ -20,7 +20,7 @@ export class AppComponent {
   @HostListener('document:mousemove')
   private startAudio(): void {
     if (!this.isAudioPlayed) {
-      this.audio.play().then(() => {
+      this.audio?.play()?.then(() => {
         this.isAudioPlayed = true;
       }).catch(error => {
         console.error('Failed to play audio:', error);
@@ -31,12 +31,11 @@ export class AppComponent {
   ngOnInit(): void {
     this.audio.src = '../assets/Michael_Vignola_-_Knowing_51058718.mp3';
     this.audio.load();
-    this.audio.loop = true; // Додаємо автоматичне повторення
+    this.audio.loop = true;
 
-    // Перевірка на завершення аудіо і його перезапуск
     this.audio.addEventListener('ended', () => {
       this.audio.currentTime = 0;
-      this.audio.play().catch(error => {
+      this.audio?.play().catch(error => {
         console.error('Failed to replay audio:', error);
       });
     });

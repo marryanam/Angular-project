@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
-import { OrbitControls } from 'three-orbitcontrols-ts';
 import * as THREE from 'three';
 import * as dat from 'dat.gui';
+import gsap from 'gsap';
 
 @Component({
   selector: 'app-design-page-1',
@@ -13,22 +13,42 @@ export class DesignPage1Component implements OnInit, OnDestroy {
   private clock = new THREE.Clock();
   private renderer!: THREE.WebGLRenderer;
   private scene = new THREE.Scene();
-  private camera!: THREE.PerspectiveCamera;
-  private controls!: OrbitControls;
+  private camera!: THREE.PerspectiveCamera | any;
   private imgs: THREE.Mesh[] = [];
-  private gui = new dat.GUI();
+  // private gui = new dat.GUI();
   private animationFrameId?: number;
   private textureLoader = new THREE.TextureLoader();
   private scrollDelta = 0;
+  private position = 0;
+  private rayCaster = new THREE.Raycaster();
+  private mouse = new THREE.Vector2();
+  private intersects:any;
+  private obj:any;
+  private lastIndex = 0; 
 
   @HostListener('window:wheel', ['$event'])
   private onMouseWheel(event: WheelEvent): void {
-    this.scrollDelta = event.deltaY > 0 ? -1 : 1;
+    const direction = Math.sign(event.deltaY);
+
+    if (
+      (direction > 0 && this.position >= this.imgs.length - 2) || 
+      (direction < 0 && this.position <= 0) 
+    ) {
+      return;
+    }
+
+    this.scrollDelta = event.deltaY * 0.0007;
+  }
+
+  @HostListener('window:mousemove', ['$event'])
+  private onMouseMove(event: WheelEvent): void {
+    this.mouse.x = event.clientX / window.innerWidth * 2 - 1;
+    this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
   }
 
   ngOnInit(): void {
-    // this.initThree();
-    // this.animate();
+    this.initThree();
+    this.animate();
   }
 
   ngOnDestroy(): void {
@@ -40,18 +60,24 @@ export class DesignPage1Component implements OnInit, OnDestroy {
   private initThree(): void {
     const canvas = document.querySelector('canvas.photo') as HTMLCanvasElement;
 
-    const geometry = new THREE.PlaneGeometry(1, 1.5);
+    const geometry = new THREE.PlaneGeometry(0.8, 1.3);
 
     for (let i = 0; i < 10; i++) {
       const material = new THREE.MeshBasicMaterial({
-        map: this.textureLoader.load(`../../../../assets/${i}.jpg`)
+        map: this.textureLoader.load(`../../../../assets/${i + 1}.jpg`)
       });
 
-      const imgMesh = new THREE.Mesh(geometry, material);
-      imgMesh.position.set(Math.random() + 0.3, (i * -1.8), 0);
+      const imgMesh = new THREE.Mesh(geometry, material) as any;
+      imgMesh.position.set(Math.random() + 0.6, i * -1.8);
       this.scene.add(imgMesh);
       this.imgs.push(imgMesh);
     }
+
+    this.obj = [];
+
+    this.scene.traverse((el: any) =>{
+      if(el.isMesh) this.obj.push(el);
+    })
 
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
     this.camera.position.set(0, 0, 2);
@@ -61,13 +87,10 @@ export class DesignPage1Component implements OnInit, OnDestroy {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = true;
-
 
     window.addEventListener('resize', this.onWindowResize.bind(this));
 
-    this.gui.add(this.camera.position, 'y').min(-5).max(10);
+    // this.gui.add(this.camera.position, 'y').min(-5).max(10);
   }
 
   private onWindowResize(): void {
@@ -82,19 +105,44 @@ export class DesignPage1Component implements OnInit, OnDestroy {
   }
 
   private animate(): void {
-    for (let img of this.imgs) {
-      img.position.y += this.scrollDelta * 0.1;
+    this.position += this.scrollDelta;
+    this.scrollDelta *= 0.9;
+    this.camera.position.y = - this.position;
 
-      if (img.position.y > 2) {
-        img.position.y = -1.8 * this.imgs.length + 2;
-      } else if (img.position.y < -1.8 * this.imgs.length + 2) {
-        img.position.y = 2;
+    this.imgs.forEach(img => {
+      img.position.y += this.scrollDelta;
+
+      if (img.position.y < -this.imgs.length * 1.8 / 2) {
+        img.position.y += this.imgs.length * 1.8;
+      } else if (img.position.y > this.imgs.length * 1.8 / 2) {
+        img.position.y -= this.imgs.length * 1.8;
+      }
+    });
+
+    this.rayCaster.setFromCamera(this.mouse, this.camera)
+    this.intersects = this.rayCaster.intersectObjects(this.obj);
+
+    for(const i of this.intersects ){
+      gsap.to(i.object.scale, {x:1.7, y:1.7});
+      gsap.to(i.object.rotation, {y:-0.5});
+      gsap.to(i.object.position, {z:-0.9});
+    }
+
+    for(const i of this.obj ){
+      if(!this.intersects.find((int:any) => int.object === i)){
+        gsap.to(i.scale, {x:1, y:1});
+        gsap.to(i.rotation, {y:0});
+        gsap.to(i.position, {z:0});
       }
     }
 
-    this.scrollDelta = 0;
-
-    this.controls.update();
+    for (const img of this.imgs) {
+      if (!this.intersects.find((int:any) => int.object === img)) {
+        gsap.to(img.scale, { x: 1, y: 1 });
+        gsap.to(img.rotation, { y: 0 });
+        gsap.to(img.position, { z: 0 });
+      }
+    }
 
     this.renderer.render(this.scene, this.camera);
 
