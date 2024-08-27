@@ -25,6 +25,7 @@ export class DesignPage1Component implements OnInit, OnDestroy {
   private intersects:any;
   private obj:any;
   private lastIndex = 0; 
+  private hoverDelay = 0.1;
 
   @HostListener('window:wheel', ['$event'])
   private onMouseWheel(event: WheelEvent): void {
@@ -123,24 +124,30 @@ export class DesignPage1Component implements OnInit, OnDestroy {
     this.intersects = this.rayCaster.intersectObjects(this.obj);
 
     for(const i of this.intersects ){
-      gsap.to(i.object.scale, {x:1.7, y:1.7});
-      gsap.to(i.object.rotation, {y:-0.5});
-      gsap.to(i.object.position, {z:-0.9});
+      gsap.delayedCall(this.hoverDelay, () => {
+        gsap.to(i.object.scale, {x:1.7, y:1.7, duration: 0.3});
+        gsap.to(i.object.rotation, {y:-0.5, duration: 0.3});
+        gsap.to(i.object.position, {z:-0.9, duration: 0.3});
+      });
     }
 
     for(const i of this.obj ){
       if(!this.intersects.find((int:any) => int.object === i)){
-        gsap.to(i.scale, {x:1, y:1});
-        gsap.to(i.rotation, {y:0});
-        gsap.to(i.position, {z:0});
+        gsap.delayedCall(this.hoverDelay, () => {
+          gsap.to(i.scale, {x:1, y:1, duration: 0.3});
+          gsap.to(i.rotation, {y:0, duration: 0.3});
+          gsap.to(i.position, {z:0, duration: 0.3});
+      });
       }
     }
 
     for (const img of this.imgs) {
       if (!this.intersects.find((int:any) => int.object === img)) {
-        gsap.to(img.scale, { x: 1, y: 1 });
-        gsap.to(img.rotation, { y: 0 });
-        gsap.to(img.position, { z: 0 });
+        gsap.delayedCall(this.hoverDelay, () => {
+          gsap.to(img.scale, { x: 1, y: 1, duration: 0.3 });
+          gsap.to(img.rotation, { y: 0, duration: 0.3 });
+          gsap.to(img.position, { z: 0, duration: 0.3 });
+        });
       }
     }
 
