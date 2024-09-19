@@ -14,6 +14,8 @@ describe('PaginationComponent', () => {
     
     fixture = TestBed.createComponent(PaginationComponent);
     component = fixture.componentInstance;
+    component.totalItems = 100; 
+    component.itemsPerPage = 10; 
     fixture.detectChanges();
   });
 

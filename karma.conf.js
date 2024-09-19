@@ -20,6 +20,9 @@ module.exports = function(config) {
           { type: 'text-summary' }
         ]
       },
+      files: [
+        { pattern: 'src/**/*.spec.ts', watched: false }
+      ],
       reporters: ['progress', 'kjhtml'],
       port: 9876,
       colors: true,

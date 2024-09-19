@@ -9,9 +9,9 @@ import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from 
 
 })
 export class PaginationComponent {
-  @Input() totalItems!: number; // Загальна кількість елементів
-  @Input() itemsPerPage: number = 10; // Кількість елементів на сторінку
-  @Input() currentPage: number = 1; // Поточна сторінка
+  @Input() totalItems!: number;
+  @Input() itemsPerPage: number = 10; 
+  @Input() currentPage: number = 1; 
   @Output() pageChanged: EventEmitter<number> = new EventEmitter<number>();
 
   get totalPages(): number {
@@ -26,6 +26,6 @@ export class PaginationComponent {
   }
 
   get pages(): number[] {
-    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
+    return Array(this.totalPages)?.fill(0).map((x, i) => i + 1);
   }
 }
