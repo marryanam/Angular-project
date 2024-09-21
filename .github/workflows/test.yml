@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Test
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,11 +27,3 @@ jobs:
 
       - name: Run Cypress tests
         run: npm run cypress:run
-
-      - name: Build Angular app
-        run: npm run build
-
-      - name: Deploy to Firebase
-        run: |
-          npm install -g firebase-tools
-          firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
