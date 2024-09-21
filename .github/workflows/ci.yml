@@ -7,8 +7,33 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-test:
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
+
+      - name: Run Cypress tests
+        run: npm run cypress:run
+
+      - name: Build Angular app
+        run: npm run build
+
+  build-deploy:
+    runs-on: ubuntu-latest
+    needs: build-test
 
     steps:
       - name: Checkout code
@@ -24,69 +49,6 @@ jobs:
 
       - name: Build Angular app
         run: npm run build
-
-      - name: List build output
-        run: ls -R dist/angular-project/browser
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: dist/angular-project/browser
-
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build
-
-      - name: List downloaded files
-        run: ls -R dist/angular-project/browser
-
-      - name: Run unit tests
-        run: npm run test -- --watch=false --browsers=ChromeHeadless
-
-      - name: Run Cypress tests
-        run: npm run cypress:run
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: build
-
-      - name: List downloaded files
-        run: ls -R dist/angular-project/browser
 
       - name: Deploy to Firebase
         run: |
